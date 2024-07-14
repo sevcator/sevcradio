@@ -1,9 +1,13 @@
 # 📻 A lightweight 24/7 radio bot for Discord server.
 
 Commands:
+
 **/set-streamlink** - Set audio streamlink to stream in voice channel
+
 **/set-channel** - Set channel to rejoin and play streamlink
+
 **/reload** - Reload bot with new configuration
+
 **/info** - Get bot information
 
 How to use:
