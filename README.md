@@ -20,4 +20,7 @@ How to use:
 6. Configure config.json and run it using:
 ```node bot.js```
 
+If you want to destroy all current slash commands you can execute:
+```node destroy_all_slash_commands.js```
+
 *Coded by sevcator, BingAI and ChatGPT*
