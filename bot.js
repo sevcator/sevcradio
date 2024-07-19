@@ -18,11 +18,7 @@ function lerror(message) {
 client.once('ready', async () => {
   log(`Logged in as ${client.user.tag}!`);
   client.user.setPresence({
-    activities: [{ 
-      name: `Radio 📻`,
-      type: "PLAYING"
-    }],
-    status: "idle"
+    status: "online"
   });
 
   const commands = [
@@ -183,6 +179,12 @@ function playAudio(connection) {
     return;
   }
 
+function playAudio(connection) {
+  if (!connection) {
+    lerror('No connection available to play audio');
+    return;
+  }
+
   const player = createAudioPlayer();
 
   player.on('error', error => {
@@ -192,14 +194,36 @@ function playAudio(connection) {
   player.on('stateChange', (oldState, newState) => {
     log(`Audio player transitioned from ${oldState.status} to ${newState.status}`);
 
-    if (newState.status === 'autopaused') {
-      log('Player is autopaused, attempting to resume playback');
-      const resource = createAudioResource(config.streamLink);
-      player.play(resource);
+    const resource = createAudioResource(config.streamLink, {
+      bufferingTimeout: config.bufferingTimeout
+    });
+
+    switch (newState.status) {
+      case 'autopaused':
+      case 'idle':
+        log(`Player is ${newState.status}, attempting to play audio again...`);
+        player.play(resource);
+        break;
+      case 'playing':
+        log('Player is playing');
+        client.user.setPresence({
+          activities: [{
+            name: 'Radio 📻',
+            type: 'STREAMING',
+            url: 'https://twitch.tv/sevcadio'
+          }],
+          status: 'idle'
+        });
+        break;
+      default:
+        break;
     }
   });
 
-  const resource = createAudioResource(config.streamLink);
+  const resource = createAudioResource(config.streamLink, {
+    bufferingTimeout: config.bufferingTimeout
+  });
+
   player.play(resource);
   connection.subscribe(player);
 }
