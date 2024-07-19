@@ -179,12 +179,6 @@ function playAudio(connection) {
     return;
   }
 
-function playAudio(connection) {
-  if (!connection) {
-    lerror('No connection available to play audio');
-    return;
-  }
-
   const player = createAudioPlayer();
 
   player.on('error', error => {
