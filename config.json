@@ -3,5 +3,6 @@
   "ownerId": "",
   "streamLink": "",
   "channelId": "",
-  "guildId": ""
+  "guildId": "",
+  "bufferingTimeout": "60000"
 }
